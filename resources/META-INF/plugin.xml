@@ -1,0 +1,40 @@
+<idea-plugin>
+  <id>cn.deemons.tinypng.plugin</id>
+  <name>TinyPNG</name>
+  <version>1.1</version>
+  <vendor email="deemonsch@gmail.com" url="https://deemons.cn"/>
+
+  <description><![CDATA[
+      a plugin for compression picture by TinyPNG API<br>
+      利用 TinyPNG 的 API ，开发的图片压缩工具，已提供了一些 Key。
+    ]]></description>
+
+  <change-notes><![CDATA[
+      v1.1 fix bug <br>
+      v1.0 <br>
+
+    ]]>
+  </change-notes>
+
+  <!-- please see http://www.jetbrains.org/intellij/sdk/docs/basics/getting_started/build_number_ranges.html for description -->
+  <idea-version since-build="145"/>
+
+  <!-- please see http://www.jetbrains.org/intellij/sdk/docs/basics/getting_started/plugin_compatibility.html
+       on how to target different products -->
+  <!-- uncomment to enable plugin in all products
+  -->
+  <depends>com.intellij.modules.lang</depends>
+
+  <extensions defaultExtensionNs="com.intellij">
+    <!-- Add your extensions here -->
+  </extensions>
+
+  <actions>
+    <!-- Add your actions here -->
+    <action id="TingPngPlugin.TingPngAction" class="cn.deemons.tinypng.TingPngAction" text="TinyPng"
+            description="a plugin for compression picture by TinyPNG API">
+      <add-to-group group-id="ToolsMenu" anchor="last"/>
+    </action>
+  </actions>
+
+</idea-plugin>
