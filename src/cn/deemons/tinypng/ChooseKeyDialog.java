@@ -23,6 +23,7 @@ public class ChooseKeyDialog extends JFrame {
     private JButton deleteButton;
     private final String DATA_KEY = "data_key";
 
+    private ButtonListener mListener;
     private String mSelectKey;
     private KeyBean mKeyBean;
 
@@ -141,7 +142,9 @@ public class ChooseKeyDialog extends JFrame {
 
     private void onOK() {
         dispose();
-        Tinify.setKey(mSelectKey);
+        if (mListener != null) {
+            mListener.onClick(mSelectKey);
+        }
     }
 
     @Override
@@ -155,5 +158,14 @@ public class ChooseKeyDialog extends JFrame {
     private void onCancel() {
         // add your code here if necessary
         dispose();
+    }
+
+    public void setEnterButtonListener(ButtonListener listener) {
+        mListener = listener;
+    }
+
+
+    public interface ButtonListener{
+        void onClick(String api);
     }
 }

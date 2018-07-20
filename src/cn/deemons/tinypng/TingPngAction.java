@@ -11,55 +11,63 @@ import com.tinify.Source;
 import com.tinify.Tinify;
 import org.apache.http.util.TextUtils;
 
+import javax.swing.*;
 import java.util.ArrayList;
 import java.util.logging.Logger;
 
 public class TingPngAction extends AnAction {
     static Logger logger = Logger.getLogger("UploadFileAction");
-    private ProgressDialog progressDialog;
     private static int currentIndex = 0;
     private ArrayList<VirtualFile> pictureFiles = new ArrayList<>();
     private Project project;
     private static boolean cancelTiny = false;
-    private String api;
 
     @Override
     public void actionPerformed(AnActionEvent e) {
+        project = e.getProject();
+
 
         ChooseKeyDialog dialog = new ChooseKeyDialog(e.getProject());
         dialog.setSize(600, 400);
         dialog.setLocationRelativeTo(null);
         dialog.setVisible(true);
 
+        dialog.setEnterButtonListener(new ChooseKeyDialog.ButtonListener() {
+            @Override
+            public void onClick(String api) {
+
+                if (TextUtils.isEmpty(api)) {
+                    return;
+                }
+                Tinify.setKey(api);
+
+                chooseFile();
 
 
-
-        if (TextUtils.isEmpty(api)) {
-            return;
-        }
-        Tinify.setKey(api);
+            }
+        });
 
 
+    }
 
+    private void chooseFile() {
         FileChooserDescriptor descriptor = new FileChooserDescriptor(true, true, false, false, false, true);
         VirtualFile[] selectedFiles = FileChooser.chooseFiles(descriptor, project, null);
         if (selectedFiles.length == 0) {
             return;
         }
 
-        pictureFiles.clear();
+
         filterAllPictures(selectedFiles);
+
         tinyFiles();
 
-        progressDialog = new ProgressDialog(project);
-        progressDialog.setTitle("上传进度");
-        progressDialog.setMaxImages(pictureFiles.size());
-        progressDialog.revalidate();
 
-        progressDialog.show();
     }
 
+
     private void filterAllPictures(VirtualFile[] selectedFiles) {
+        pictureFiles.clear();
         for (int i = 0; i < selectedFiles.length; i++) {
             VirtualFile selectedFile = selectedFiles[i];
             if (selectedFile.isDirectory()) {
@@ -76,9 +84,17 @@ public class TingPngAction extends AnAction {
     }
 
     private void tinyFiles() {
+        Progress dialog = new Progress();
+        dialog.setTitle("上传进度");
+        dialog.setMax(pictureFiles.size());
+        dialog.setValue(0);
+        dialog.pack();
+
+        dialog.setCancelListener(() -> cancelTiny = true);
+
         cancelTiny = false;
+        currentIndex = 0;
         for (int i = 0; i < pictureFiles.size(); i++) {
-            currentIndex = 0;
             VirtualFile virtualFile = pictureFiles.get(i);
             new Thread(() -> {
                 Source source = null;
@@ -91,8 +107,10 @@ public class TingPngAction extends AnAction {
                         source.toFile(virtualFile.getPath());
 
                         currentIndex++;
-                        progressDialog.setCurrentIndex(currentIndex);
-                        progressDialog.revalidate();
+                        SwingUtilities.invokeLater(() -> {
+                            dialog.setValue(currentIndex);
+                            dialog.addString(virtualFile.getPath(), virtualFile.getLength(), result.size());
+                        });
 
                     }
                 } catch (Exception e1) {
@@ -100,10 +118,15 @@ public class TingPngAction extends AnAction {
                     e1.printStackTrace();
                     if (e1.toString().contains("AccountException")) {
                         cancelTiny = true;
-                        progressDialog.showError();
+                        dialog.showError();
                     }
                 }
             }).start();
         }
+
+        dialog.setSize(600, 400);
+        dialog.setLocationRelativeTo(null);
+        dialog.setVisible(true);
     }
+
 }

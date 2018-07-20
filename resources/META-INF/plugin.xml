@@ -1,7 +1,7 @@
 <idea-plugin>
   <id>cn.deemons.tinypng.plugin</id>
   <name>TinyPNG</name>
-  <version>1.1</version>
+  <version>1.2</version>
   <vendor email="deemonsch@gmail.com" url="https://deemons.cn"/>
 
   <description><![CDATA[
@@ -10,6 +10,7 @@
     ]]></description>
 
   <change-notes><![CDATA[
+      v1.2 add info
       v1.1 fix bug <br>
       v1.0 <br>
 
