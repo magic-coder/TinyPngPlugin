@@ -38,7 +38,7 @@
 为方便大家申请 Key，在此写下步骤。
 
 1. 首先到 [TinyPNG](https://tinypng.com/) 官网，点击右上角 **Login** ，输入邮箱，目前支持谷歌邮箱。![Snipaste_2018-07-26_23-43-10](https://ws4.sinaimg.cn/large/006tKfTcgy1ftnqx9rb6ej30xd0bjwgu.jpg)
-2. 在自己的邮箱中找到对应邮件，点击登录链接后，登录成功。
+2. 在自己的邮箱中找到对应邮件，点击登录链接后，登录成功。<br>
 ![Snipaste_2018-07-26_23-43-59](https://ws4.sinaimg.cn/large/006tKfTcgy1ftnqx8gsycj308l075weq.jpg)
 3. 点击右上角名称，然后申请查看自己的 API Key
 ![Snipaste_2018-07-26_23-46-10](https://ws2.sinaimg.cn/large/006tKfTcgy1ftnqxawkblj30yv0hc0uj.jpg)
