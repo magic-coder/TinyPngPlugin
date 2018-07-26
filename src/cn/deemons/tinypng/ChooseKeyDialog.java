@@ -45,7 +45,8 @@ public class ChooseKeyDialog extends JFrame {
 
     private void initView() {
         setTitle("请选择API Key");
-
+        setAutoRequestFocus(true);
+        setAlwaysOnTop(true);
     }
 
     private void initData() {
@@ -58,7 +59,7 @@ public class ChooseKeyDialog extends JFrame {
                     "vP7UbLIinPUX4g6Exxbj6accdEDqeK6z",
                     "q6PRmH_98vCYBWZqkIMFSkDlFp4P1gcq",
                     "i4S-XnT3ykpdjwSMrA8T1aPfxcZpvXVE"};
-            mKeyBean=new KeyBean();
+            mKeyBean = new KeyBean();
             mKeyBean.keys.addAll(Arrays.asList(strings));
             PropertiesComponent.getInstance().setValue(DATA_KEY, new Gson().toJson(mKeyBean));
         }
@@ -98,6 +99,7 @@ public class ChooseKeyDialog extends JFrame {
         addButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                setVisible(false);
                 showInputDialog();
             }
         });
@@ -138,9 +140,12 @@ public class ChooseKeyDialog extends JFrame {
             mKeyBean.keys.add(key);
             refresh();
         }
+        setVisible(true);
+
     }
 
     private void onOK() {
+        if (mSelectKey == null || "".equals(mSelectKey)) return;
         dispose();
         if (mListener != null) {
             mListener.onClick(mSelectKey);
@@ -150,7 +155,7 @@ public class ChooseKeyDialog extends JFrame {
     @Override
     public void dispose() {
         PropertiesComponent.getInstance().unsetValue(DATA_KEY);
-        PropertiesComponent.getInstance().setValue(DATA_KEY,  new Gson().toJson(mKeyBean));
+        PropertiesComponent.getInstance().setValue(DATA_KEY, new Gson().toJson(mKeyBean));
 
         super.dispose();
     }
@@ -165,7 +170,7 @@ public class ChooseKeyDialog extends JFrame {
     }
 
 
-    public interface ButtonListener{
+    public interface ButtonListener {
         void onClick(String api);
     }
 }
