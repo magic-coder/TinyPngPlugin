@@ -42,8 +42,6 @@ public class TingPngAction extends AnAction {
                 Tinify.setKey(api);
 
                 chooseFile();
-
-
             }
         });
 

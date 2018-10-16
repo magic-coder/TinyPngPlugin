@@ -1,7 +1,7 @@
 <idea-plugin>
   <id>cn.deemons.tinypng.plugin</id>
   <name>TinyPNG</name>
-  <version>1.4</version>
+  <version>1.5</version>
   <vendor email="deemonsch@gmail.com" url="https://deemons.cn">Deemons</vendor>
 
   <description><![CDATA[
@@ -29,6 +29,7 @@
 
   <change-notes><![CDATA[
       <ul>
+        <li>v1.5 fix bug</li>
         <li>v1.4 edit doc</li>
         <li>v1.3 fix some bug</li>
         <li>v1.2 add info</li>
@@ -40,7 +41,7 @@
   </change-notes>
 
   <!-- please see http://www.jetbrains.org/intellij/sdk/docs/basics/getting_started/build_number_ranges.html for description -->
-  <idea-version since-build="145"/>
+  <idea-version since-build="173"/>
 
   <!-- please see http://www.jetbrains.org/intellij/sdk/docs/basics/getting_started/plugin_compatibility.html
        on how to target different products -->
