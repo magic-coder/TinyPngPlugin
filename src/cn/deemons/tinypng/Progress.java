@@ -11,7 +11,10 @@ public class Progress extends JDialog {
     private JProgressBar progressBar;
     private JTextArea textArea;
 
+    private long beforeTotal = 0;
+    private long afterTotal = 0;
     private long diffTotal = 0;
+
     private CancelListener listener;
     private int max = 0;
     private boolean isFinish = false;
@@ -89,16 +92,20 @@ public class Progress extends JDialog {
         isFinish = value == max;
     }
 
-    public void addString(String path, long source, long result) {
+    public void addString(String path, long source, long result, double ratio) {
 
         stringBuilder.append("\n");
         stringBuilder.append(progressBar.getString());
         stringBuilder.append(" ====>>> ");
-        stringBuilder.append("path=").append(path);
+        stringBuilder.append(path);
         stringBuilder.append("\n \t\tsource = ").append(source);
         stringBuilder.append("\n \t\tresult = ").append(result);
+
+        beforeTotal += source;
+        afterTotal += result;
+
         long diff = source - result;
-        stringBuilder.append("\n \t\tdiff   = " + diff);
+        stringBuilder.append("\n \t\tdiff   = ").append(diff).append("   ratio = ").append(String.format("%.2f %%", ratio * 100));
         if (diff >= 0) {
             diffTotal += diff;
         } else {
@@ -108,10 +115,21 @@ public class Progress extends JDialog {
         if (isFinish) {
             stringBuilder.append("\n\n=============================================");
             stringBuilder.append("\n\nFinish");
+            stringBuilder.append("\nBefore Total size：").append(beforeTotal);
+            stringBuilder.append("\nAfter Total size：").append(afterTotal);
             stringBuilder.append("\nTotal compressed size：").append(diffTotal);
+            double ratioTotal = (((double) diffTotal) / beforeTotal) * 100;
+            stringBuilder.append("\nTotal compressed ratio：").append(String.format("%.2f %%", ratioTotal));
             buttonOK.setEnabled(true);
         }
 
+        textArea.setText(stringBuilder.toString());
+    }
+
+
+    public void addString(String msg) {
+        stringBuilder.append("\n");
+        stringBuilder.append(msg);
         textArea.setText(stringBuilder.toString());
     }
 
@@ -121,9 +139,9 @@ public class Progress extends JDialog {
         progressBar.setMaximum(value);
     }
 
-    public void showError() {
+    public void showError(String msg) {
         stringBuilder.append("\n \n");
-        stringBuilder.append("出错：每月500张图片限制已用完,请输入新KEY");
+        stringBuilder.append("出错: ").append(msg);
         textArea.setText(stringBuilder.toString());
     }
 
@@ -155,7 +173,7 @@ public class Progress extends JDialog {
 
                 });
             }
-            dialog.showError();
+            dialog.showError("");
         }).start();
 
         dialog.setVisible(true);
